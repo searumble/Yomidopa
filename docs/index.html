@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ヨミドーパ</title>
+<meta name="description" content="青空文庫の本物の文章を、1〜2文ずつ読みつづける読書アプリ">
+<meta name="theme-color" content="#f6f1e7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#16140f" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="ヨミドーパ">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="bar">
+  <div class="now" id="now" aria-live="polite"></div>
+  <div class="bell" id="bell" aria-label="通知"><span aria-hidden="true">🔔</span><span class="badge" id="badge" hidden></span></div>
+</header>
+
+<div class="toast" id="toast" role="status" hidden></div>
+
+<main id="scroller">
+  <article id="flow" class="flow"></article>
+  <div id="slot" class="slot"></div>
+  <div class="spacer"></div>
+</main>
+
+<footer class="dock">
+  <button id="more" type="button" class="more" disabled>続きを読む</button>
+</footer>
+
+<canvas id="confetti" aria-hidden="true"></canvas>
+<script type="module" src="app.js"></script>
+</body>
+</html>
