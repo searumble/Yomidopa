@@ -190,6 +190,105 @@
         "https://www.aozora.gr.jp/index_pages/person305.html",
         "https://ja.wikipedia.org/wiki/%E6%AD%A3%E5%B2%A1%E5%AD%90%E8%A6%8F"
       ]
+    },
+    "001095": {
+      "name": "坂口安吾",
+      "born": "1906-10-20",
+      "died": "1955-02-17",
+      "episodes": [],
+      "sources": [
+        "https://www.aozora.gr.jp/index_pages/person1095.html"
+      ]
+    },
+    "000064": {
+      "name": "樋口一葉",
+      "born": "1872-05-02",
+      "died": "1896-11-23",
+      "episodes": [],
+      "sources": [
+        "https://www.aozora.gr.jp/index_pages/person64.html"
+      ]
+    },
+    "000050": {
+      "name": "泉鏡花",
+      "born": "1873-11-04",
+      "died": "1939-09-07",
+      "episodes": [],
+      "sources": [
+        "https://www.aozora.gr.jp/index_pages/person50.html"
+      ]
+    },
+    "000038": {
+      "name": "国木田独歩",
+      "born": "1871-08-30",
+      "died": "1908-06-23",
+      "episodes": [],
+      "sources": [
+        "https://www.aozora.gr.jp/index_pages/person38.html"
+      ]
+    },
+    "000076": {
+      "name": "岡本かの子",
+      "born": "1889-03-01",
+      "died": "1939-02-18",
+      "episodes": [],
+      "sources": [
+        "https://www.aozora.gr.jp/index_pages/person76.html"
+      ]
+    },
+    "000040": {
+      "name": "織田作之助",
+      "born": "1913-10-26",
+      "died": "1947-01-10",
+      "episodes": [],
+      "sources": [
+        "https://www.aozora.gr.jp/index_pages/person40.html"
+      ]
+    },
+    "001030": {
+      "name": "堀辰雄",
+      "born": "1904-12-28",
+      "died": "1953-05-28",
+      "episodes": [],
+      "sources": [
+        "https://www.aozora.gr.jp/index_pages/person1030.html"
+      ]
+    },
+    "000153": {
+      "name": "石川啄木",
+      "born": "1886-02-20",
+      "died": "1912-04-13",
+      "episodes": [],
+      "sources": [
+        "https://www.aozora.gr.jp/index_pages/person153.html"
+      ]
+    },
+    "001779": {
+      "name": "江戸川乱歩",
+      "born": "1894-10-21",
+      "died": "1965-07-28",
+      "episodes": [],
+      "sources": [
+        "https://www.aozora.gr.jp/index_pages/person1779.html"
+      ]
+    },
+    "000096": {
+      "name": "夢野久作",
+      "born": "1889-01-04",
+      "died": "1936-03-11",
+      "episodes": [],
+      "sources": [
+        "https://www.aozora.gr.jp/index_pages/person96.html"
+      ]
+    },
+    "000083": {
+      "name": "菊池寛",
+      "born": "1888-12-26",
+      "died": "1948-03-06",
+      "episodes": [],
+      "sources": [
+        "https://www.aozora.gr.jp/index_pages/person83.html"
+      ]
     }
   },
   "works": [
@@ -681,6 +780,467 @@
         "死",
         "病",
         "ユーモア"
+      ]
+    },
+    {
+      "file": "000081/files/462_ruby_716/462_ruby_716.txt",
+      "genre": "童話",
+      "tags": [
+        "子ども",
+        "自然",
+        "幻想",
+        "友情"
+      ]
+    },
+    {
+      "file": "000081/files/1924_ruby_14067/1924_ruby_14067.txt",
+      "genre": "童話",
+      "tags": [
+        "自己犠牲",
+        "自然",
+        "家族",
+        "冬"
+      ]
+    },
+    {
+      "file": "000081/files/466_ruby_1478/466_ruby_1478.txt",
+      "genre": "童話",
+      "tags": [
+        "動物",
+        "寓話",
+        "罪"
+      ]
+    },
+    {
+      "file": "000081/files/459_ruby_5441/459_ruby_5441.txt",
+      "genre": "童話",
+      "tags": [
+        "夜",
+        "幻想",
+        "家族",
+        "優しさ"
+      ]
+    },
+    {
+      "file": "000081/files/43757_ruby_17734/43757_ruby_17734.txt",
+      "genre": "童話",
+      "tags": [
+        "冬",
+        "自然",
+        "子ども",
+        "幻想"
+      ]
+    },
+    {
+      "file": "000879/files/60_ruby_821/60_ruby_821.txt",
+      "genre": "短編",
+      "tags": [
+        "罪",
+        "死",
+        "家族",
+        "幻想"
+      ]
+    },
+    {
+      "file": "000879/files/55_ruby_1843/55_ruby_1843.txt",
+      "genre": "短編",
+      "tags": [
+        "ユーモア",
+        "孤独",
+        "無常"
+      ]
+    },
+    {
+      "file": "000879/files/95_ruby_885/95_ruby_885.txt",
+      "genre": "短編",
+      "tags": [
+        "幻想",
+        "罪",
+        "夜"
+      ]
+    },
+    {
+      "file": "000879/files/28_ruby_272/28_ruby_272.txt",
+      "genre": "短編",
+      "tags": [
+        "回想",
+        "無常",
+        "夜"
+      ]
+    },
+    {
+      "file": "000879/files/16_ruby_344/16_ruby_344.txt",
+      "genre": "短編",
+      "tags": [
+        "家族",
+        "孤独",
+        "無常"
+      ]
+    },
+    {
+      "file": "000148/files/752_ruby_2438/752_ruby_2438.txt",
+      "genre": "短編",
+      "tags": [
+        "ユーモア",
+        "友情",
+        "家族",
+        "旅"
+      ]
+    },
+    {
+      "file": "000148/files/760_ruby_2341/760_ruby_2341.txt",
+      "genre": "随筆",
+      "tags": [
+        "回想",
+        "死",
+        "病",
+        "孤独"
+      ]
+    },
+    {
+      "file": "000035/files/275_ruby_1532/275_ruby_1532.txt",
+      "genre": "短編",
+      "tags": [
+        "孤独",
+        "家族",
+        "子ども"
+      ]
+    },
+    {
+      "file": "000035/files/277_ruby_33097/277_ruby_33097.txt",
+      "genre": "短編",
+      "tags": [
+        "罪",
+        "孤独",
+        "祈り"
+      ]
+    },
+    {
+      "file": "000035/files/308_ruby_1623/308_ruby_1623.txt",
+      "genre": "短編",
+      "tags": [
+        "家族",
+        "孤独",
+        "病"
+      ]
+    },
+    {
+      "file": "000035/files/2253_ruby_1031/2253_ruby_1031.txt",
+      "genre": "短編",
+      "tags": [
+        "家族",
+        "罪",
+        "優しさ"
+      ]
+    },
+    {
+      "file": "000035/files/301_ruby_5915/301_ruby_5915.txt",
+      "genre": "短編",
+      "tags": [
+        "孤独",
+        "罪",
+        "死"
+      ]
+    },
+    {
+      "file": "000035/files/243_ruby_20189/243_ruby_20189.txt",
+      "genre": "短編",
+      "tags": [
+        "病",
+        "死",
+        "回想"
+      ]
+    },
+    {
+      "file": "000121/files/4719_ruby_13220/4719_ruby_13220.txt",
+      "genre": "童話",
+      "tags": [
+        "友情",
+        "無常",
+        "自然"
+      ]
+    },
+    {
+      "file": "000121/files/43403_txt_16811/43403_txt_16811.txt",
+      "genre": "童話",
+      "tags": [
+        "孤独",
+        "寓話",
+        "動物"
+      ]
+    },
+    {
+      "file": "000121/files/632_ruby_2032/632_ruby_2032.txt",
+      "genre": "童話",
+      "tags": [
+        "動物",
+        "家族",
+        "夜",
+        "子ども"
+      ]
+    },
+    {
+      "file": "000119/files/1737_ruby_5656/1737_ruby_5656.txt",
+      "genre": "短編",
+      "tags": [
+        "孤独",
+        "罪",
+        "旅"
+      ]
+    },
+    {
+      "file": "000119/files/1738_ruby_16462/1738_ruby_16462.txt",
+      "genre": "短編",
+      "tags": [
+        "友情",
+        "死",
+        "寓話"
+      ]
+    },
+    {
+      "file": "000119/files/622_ruby_14496/622_ruby_14496.txt",
+      "genre": "短編",
+      "tags": [
+        "寓話",
+        "幻想",
+        "ユーモア"
+      ]
+    },
+    {
+      "file": "000074/files/419_ruby_19701/419_ruby_19701.txt",
+      "genre": "短編",
+      "tags": [
+        "死",
+        "夜",
+        "幻想",
+        "水"
+      ]
+    },
+    {
+      "file": "000074/files/417_ruby_19815/417_ruby_19815.txt",
+      "genre": "短編",
+      "tags": [
+        "冬",
+        "病",
+        "孤独"
+      ]
+    },
+    {
+      "file": "000025/files/206_ruby_20462/206_ruby_20462.txt",
+      "genre": "随筆",
+      "tags": [
+        "家族",
+        "死",
+        "優しさ",
+        "子ども"
+      ]
+    },
+    {
+      "file": "000042/files/2363_ruby_4700/2363_ruby_4700.txt",
+      "genre": "随筆",
+      "tags": [
+        "自然",
+        "水"
+      ]
+    },
+    {
+      "file": "001475/files/50993_ruby_46196/50993_ruby_46196.txt",
+      "genre": "童話",
+      "tags": [
+        "家族",
+        "死",
+        "子ども",
+        "幻想"
+      ]
+    },
+    {
+      "file": "001475/files/51008_ruby_51526/51008_ruby_51526.txt",
+      "genre": "童話",
+      "tags": [
+        "寓話",
+        "ユーモア",
+        "優しさ"
+      ]
+    },
+    {
+      "file": "000067/files/641_ruby_21646/641_ruby_21646.txt",
+      "genre": "短編",
+      "tags": [
+        "幻想",
+        "旅",
+        "動物",
+        "孤独"
+      ]
+    },
+    {
+      "file": "000067/files/859_ruby_21655/859_ruby_21655.txt",
+      "genre": "詩",
+      "tags": [
+        "孤独",
+        "病",
+        "幻想",
+        "夜"
+      ]
+    },
+    {
+      "file": "001095/files/42618_ruby_21052/42618_ruby_21052.txt",
+      "genre": "短編",
+      "tags": [
+        "死",
+        "孤独",
+        "幻想",
+        "罪"
+      ]
+    },
+    {
+      "file": "001095/files/42614_ruby_21833/42614_ruby_21833.txt",
+      "genre": "短編",
+      "tags": [
+        "死",
+        "幻想",
+        "罪"
+      ]
+    },
+    {
+      "file": "001095/files/42620_ruby_21051/42620_ruby_21051.txt",
+      "genre": "随筆",
+      "tags": [
+        "無常",
+        "罪"
+      ]
+    },
+    {
+      "file": "000064/files/56041_ruby_54720/56041_ruby_54720.txt",
+      "genre": "短編",
+      "tags": [
+        "子ども",
+        "回想",
+        "無常"
+      ]
+    },
+    {
+      "file": "000050/files/521_ruby_20582/521_ruby_20582.txt",
+      "genre": "短編",
+      "tags": [
+        "幻想",
+        "旅",
+        "罪",
+        "水"
+      ]
+    },
+    {
+      "file": "000050/files/360_ruby_434/360_ruby_434.txt",
+      "genre": "短編",
+      "tags": [
+        "死",
+        "病",
+        "回想"
+      ]
+    },
+    {
+      "file": "000038/files/329_ruby_5709/329_ruby_5709.txt",
+      "genre": "随筆",
+      "tags": [
+        "自然",
+        "旅"
+      ]
+    },
+    {
+      "file": "000076/files/1016_ruby_19595/1016_ruby_19595.txt",
+      "genre": "短編",
+      "tags": [
+        "家族",
+        "回想",
+        "孤独"
+      ]
+    },
+    {
+      "file": "000040/files/545_ruby_33101/545_ruby_33101.txt",
+      "genre": "短編",
+      "tags": [
+        "家族",
+        "ユーモア"
+      ]
+    },
+    {
+      "file": "001030/files/4803_ruby_14149/4803_ruby_14149.txt",
+      "genre": "短編",
+      "tags": [
+        "病",
+        "死",
+        "自然"
+      ]
+    },
+    {
+      "file": "000153/files/816_ruby_5621/816_ruby_5621.txt",
+      "genre": "詩",
+      "tags": [
+        "孤独",
+        "回想",
+        "家族"
+      ]
+    },
+    {
+      "file": "001779/files/56648_ruby_58198/56648_ruby_58198.txt",
+      "genre": "短編",
+      "tags": [
+        "罪",
+        "幻想",
+        "孤独"
+      ]
+    },
+    {
+      "file": "001779/files/56647_ruby_58166/56647_ruby_58166.txt",
+      "genre": "短編",
+      "tags": [
+        "罪",
+        "ユーモア"
+      ]
+    },
+    {
+      "file": "000096/files/2381_ruby_727/2381_ruby_727.txt",
+      "genre": "短編",
+      "tags": [
+        "罪",
+        "水",
+        "子ども",
+        "死"
+      ]
+    },
+    {
+      "file": "000083/files/496_ruby_19865/496_ruby_19865.txt",
+      "genre": "短編",
+      "tags": [
+        "罪",
+        "自己犠牲",
+        "祈り"
+      ]
+    },
+    {
+      "file": "000083/files/502_ruby_19913/502_ruby_19913.txt",
+      "genre": "短編",
+      "tags": [
+        "家族",
+        "罪"
+      ]
+    },
+    {
+      "file": "000129/files/689_ruby_23256/689_ruby_23256.txt",
+      "genre": "短編",
+      "tags": [
+        "家族",
+        "自己犠牲",
+        "旅",
+        "死"
+      ]
+    },
+    {
+      "file": "000129/files/45244_ruby_21881/45244_ruby_21881.txt",
+      "genre": "短編",
+      "tags": [
+        "家族",
+        "罪",
+        "自己犠牲"
       ]
     }
   ],
