@@ -73,7 +73,7 @@ async function main() {
     cards.similar++;
     checked++;
     if (c.label !== "🎁 似た作品") ng("似た作品のラベル", c.label);
-    if (!c.hasButton) ng("似た作品の投稿に「続きを読む」がない");
+    if (!c.read && !c.hasButton) ng("似た作品の投稿に「続きを読む」がない");
     if (!byId.get(c.work)?.orig.includes(norm(c.text))) ng("似た作品の文章が原文にない", c.work);
   }
   const unread = tops.filter((c) => !c.read);
@@ -121,8 +121,23 @@ async function main() {
   const bodyText = await page.textContent("body");
   if (/ガチャ|発動|上位\s*\d+\s*%|ランキング/.test(bodyText)) ng("説明文/偽の統計が出ている");
   // ボタンは各投稿の「続きを読む」だけ
-  const labels = await page.$$eval("button, [role=button]", (b) => [...new Set(b.map((x) => x.textContent.trim()))]);
-  if (labels.length !== 1 || labels[0] !== "続きを読む") ng("ボタン", labels);
+  const labels = await page.$$eval("#feed button", (b) => [...new Set(b.map((x) => x.textContent.trim()))]);
+  if (labels.length !== 1 || labels[0] !== "続きを読む") ng("投稿のボタン", labels);
+
+  // 🔔 を押すと過去の通知の一覧が出て、出た通知がすべて新しい順に並ぶこと。見たら数字が消えること
+  const notes = await page.evaluate(() => window.__yomiNotes);
+  await page.click("#bell", { force: true });
+  const hist = await page.$$eval("#history-list li", (lis) => lis.map((li) => li.querySelector(".msg")?.textContent));
+  const expect = notes.map((n) => n.text).reverse().slice(0, 200);
+  if (hist.length !== expect.length || hist.some((t, k) => t !== expect[k])) ng("通知の一覧が合わない", hist.length, expect.length);
+  if (!(await page.$eval("#badge", (b) => b.hidden))) ng("一覧を見たあとも🔔の数字が残っている");
+  await page.click("#history .close", { force: true });
+  if (!(await page.$eval("#history", (h) => h.hidden))) ng("通知の一覧が閉じない");
+  const kinds = new Set(notes.filter((n) => n.kind === "trivia").map((n) => n.text));
+  const episodes = new Set(index.flatMap((w) => w.facts.filter((f) => f.kind === "episode").map((f) => f.t)));
+  if (![...kinds].some((t) => episodes.has(t))) ng("作者のエピソードが一度も出ていない");
+  const tl = notes.filter((n) => n.kind === "trivia").map((n) => n.text);
+  if (tl.some((t, k) => k > 0 && t === tl[k - 1])) ng("同じ豆知識が続けて出た");
   if (errors.length) ng("JS エラー", errors);
 
   await page.screenshot({ path: path.join(process.env.SHOT_DIR || ROOT, "e2e-last.png") });

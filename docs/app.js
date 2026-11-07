@@ -5,7 +5,7 @@ const feed = $("feed"), sentinel = $("sentinel"), scroller = $("scroller");
 const KEY = "yomidopa:v2";
 
 // ---------- 保存(作品ごとの読書位置など。すべてこの端末の中だけ) ----------
-const fresh = () => ({ pos: {}, done: [], authors: [], chars: 0, presses: 0, seen: {}, last: null, interest: [] });
+const fresh = () => ({ pos: {}, done: [], authors: [], chars: 0, presses: 0, seen: {}, last: null, interest: [], history: [], openedAt: 0 });
 let st = fresh();
 try {
   const raw = localStorage.getItem(KEY) || localStorage.getItem("yomidopa:v1");
@@ -129,8 +129,15 @@ async function readMore(state) {
 // ---------- ガチャ(押すたび: 40% 豆知識 → 通知 / 残り 似た作品 → タイムラインの一番上) ----------
 const MAX_TOP_CARDS = 5;
 async function showGacha(state) {
-  const g = drawGacha(index, state.meta, Math.random);
+  let g = drawGacha(index, state.meta, Math.random);
   if (!g) return;
+  // 最近出した豆知識は、なるべくくり返さない(引きなおすのは豆知識の中だけ。40%の割合は変えない)
+  if (g.type === "trivia") {
+    const recentFacts = st.history.filter((h) => h.kind === "trivia").slice(0, 20).map((h) => h.text);
+    const pool = index.filter((w) => w.id === state.meta.id || w.authorId === state.meta.authorId).flatMap((w) => w.facts);
+    const fresh = pool.filter((f) => !recentFacts.includes(f.t));
+    if (recentFacts.includes(g.fact.t) && fresh.length) g = { ...g, fact: fresh[Math.floor(Math.random() * fresh.length)] };
+  }
   if (g.type === "trivia") {
     notify("📜", g.fact.t, "trivia");
     buzz(8);
@@ -207,9 +214,14 @@ async function addPosts(n) {
 const queue = [];
 let toastTimer = null;
 const noteLog = (window.__yomiNotes = []); // 検証用
+const HISTORY_MAX = 200;
 function notify(icon, text, kind) {
   noteLog.push({ icon, text, kind });
   if (noteLog.length > 500) noteLog.shift();
+  // 過去の通知として残す(🔔 から見られる)
+  st.history.unshift({ icon, text, kind, t: Date.now() });
+  st.history.length = Math.min(st.history.length, HISTORY_MAX);
+  save();
   // 豆知識は、まだ出ていないものがあれば新しいものに置きかえる(たまりすぎないように)
   if (kind === "trivia") {
     for (let k = queue.length - 1; k >= 0; k--) if (queue[k].kind === "trivia") queue.splice(k, 1);
@@ -224,7 +236,8 @@ function praise(key, msg) {
   notify("🔔", msg, "praise");
 }
 function updateBadge() {
-  const n = queue.length + (toastTimer ? 1 : 0);
+  // 🔔 の数字 = まだ一覧で見ていない通知の数
+  const n = st.history.filter((h) => h.t > st.openedAt).length;
   $("badge").hidden = n === 0;
   $("badge").textContent = n;
 }
@@ -239,6 +252,30 @@ function showNextToast() {
   updateBadge();
 }
 $("toast").addEventListener("click", () => { clearTimeout(toastTimer); showNextToast(); });
+
+// ---------- 🔔 過去の通知の一覧 ----------
+function fmtTime(t) {
+  const d = new Date(t), now = new Date();
+  const hm = `${d.getHours()}:${String(d.getMinutes()).padStart(2, "0")}`;
+  return d.toDateString() === now.toDateString() ? hm : `${d.getMonth() + 1}月${d.getDate()}日 ${hm}`;
+}
+function openHistory() {
+  const list = $("history-list");
+  list.innerHTML = "";
+  if (st.history.length === 0) list.append(el("li", "empty", "まだ通知はありません。"));
+  for (const h of st.history) {
+    const li = el("li", `${h.kind}${h.t > st.openedAt ? " unread" : ""}`);
+    li.append(el("span", "icon", h.icon), el("span", "msg", h.text), el("time", "", fmtTime(h.t)));
+    list.append(li);
+  }
+  st.openedAt = Date.now();
+  save();
+  updateBadge();
+  $("history").hidden = false;
+}
+const closeHistory = () => { $("history").hidden = true; };
+$("bell").addEventListener("click", () => ($("history").hidden ? openHistory() : closeHistory()));
+$("history").addEventListener("click", (e) => { if (e.target.id === "history" || e.target.closest(".close")) closeHistory(); });
 
 const PRESS_MARKS = [10, 100, 300, 1000, 3000, 10000];
 const CHAR_MARKS = [1000, 10000, 30000, 50000, 100000, 200000, 300000];
@@ -303,6 +340,7 @@ async function start() {
       notePosted(last.id);
     }
   }
+  updateBadge();
   await addPosts(6);
   new IntersectionObserver((ents) => {
     if (ents.some((e) => e.isIntersecting)) addPosts(5);

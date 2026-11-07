@@ -158,6 +158,9 @@ def make_facts(title, author, a, b):
     by, bm, bd = a["born"].split("-")
     dy, dm, dd = a["died"].split("-")
     facts.append({"t": f"{author}は{by}年{int(bm)}月{int(bd)}日に生まれ、{dy}年{int(dm)}月{int(dd)}日に亡くなりました。", "src": [a["born"], a["died"]], "kind": "author"})
+    # 作者のエピソード(tools/catalog.json の authors.*.episodes。手で書いたもの)
+    for ep in a.get("episodes", []):
+        facts.append({"t": ep, "src": ["catalog:episodes"], "kind": "episode"})
     return facts
 
 

@@ -67,7 +67,7 @@ for (const w of index) {
   const a = catalog.authors[w.authorId];
   for (const f of w.facts) {
     for (const src of f.src) {
-      const ok = o.foot.includes(src) || src === a.born || src === a.died;
+      const ok = o.foot.includes(src) || src === a.born || src === a.died || (f.kind === "episode" && src === "catalog:episodes" && a.episodes.includes(f.t));
       if (!ok) fail(`${w.id}: 豆知識の根拠が見つからない: ${src}`);
     }
     if (f.kind === "biblio") for (const src of f.src) if (!f.t.includes(src.replace(/作成$/, ""))) fail(`${w.id}: 豆知識の文に根拠がそのまま入っていない`);

@@ -19,11 +19,18 @@
 <body>
 <header class="bar">
   <div class="logo">ヨミドーパ</div>
-  <div class="bell" aria-label="通知"><span aria-hidden="true">🔔</span><span class="badge" id="badge" hidden></span></div>
+  <button class="bell" id="bell" type="button" aria-label="過去の通知"><span aria-hidden="true">🔔</span><span class="badge" id="badge" hidden></span></button>
 </header>
 
 <div class="toast" id="toast" role="status" hidden></div>
 <div class="pill" id="pill" hidden></div>
+
+<div class="history" id="history" hidden>
+  <section class="sheet" role="dialog" aria-label="通知">
+    <header><h2>通知</h2><button class="close" type="button">閉じる</button></header>
+    <ul id="history-list"></ul>
+  </section>
+</div>
 
 <main id="scroller">
   <div id="feed" class="feed"></div>
