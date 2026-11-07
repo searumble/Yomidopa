@@ -18,21 +18,16 @@
 </head>
 <body>
 <header class="bar">
-  <div class="now" id="now" aria-live="polite"></div>
-  <div class="bell" id="bell" aria-label="通知"><span aria-hidden="true">🔔</span><span class="badge" id="badge" hidden></span></div>
+  <div class="logo">ヨミドーパ</div>
+  <div class="bell" aria-label="通知"><span aria-hidden="true">🔔</span><span class="badge" id="badge" hidden></span></div>
 </header>
 
 <div class="toast" id="toast" role="status" hidden></div>
 
 <main id="scroller">
-  <article id="flow" class="flow"></article>
-  <div id="slot" class="slot"></div>
-  <div class="spacer"></div>
+  <div id="feed" class="feed"></div>
+  <div id="sentinel" class="sentinel" aria-hidden="true"></div>
 </main>
-
-<footer class="dock">
-  <button id="more" type="button" class="more" disabled>続きを読む</button>
-</footer>
 
 <canvas id="confetti" aria-hidden="true"></canvas>
 <script type="module" src="app.js"></script>

@@ -157,3 +157,41 @@ export function seededRandom(seed) {
     return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
   };
 }
+
+// ---------- タイムライン(フィード) ----------
+
+/**
+ * フィードに出す作品を選ぶ。最近出した作品は避け、「続きを読む」を押した作品に似ているものを出やすくする。
+ * recent: 最近フィードに出した作品ID、interest: 最近「続きを読む」を押した作品(メタデータ)
+ */
+export function pickFeedWork(index, recent, interest, rand) {
+  let pool = index.filter((w) => !recent.includes(w.id));
+  if (pool.length === 0) pool = index;
+  const cands = pool.map((w) => ({ w, score: 1 + interest.reduce((s, x) => s + similarity(x, w), 0) * 0.6 }));
+  return pickWeighted(cands, rand).w;
+}
+
+/** 段落の頭から始まるかたまりかどうか(抜き出しは段落の頭から始めると読みやすい)。 */
+function startsParagraph(text, s) {
+  return s === 0 || text[s - 1] === "\n";
+}
+
+/**
+ * 投稿の最初のかたまりを決める。
+ * 読みかけの作品なら 35% で続きから、20% で冒頭、残りは本文のどこか(段落の頭)を抜き出す。
+ * 返り値: {i: かたまり番号, kind: "resume" | "opening" | "excerpt"}
+ */
+export function feedStart(text, chunks, savedPos, rand) {
+  if (savedPos > 0 && savedPos < text.length && rand() < 0.35) {
+    const i = chunkIndexAt(chunks, savedPos);
+    if (i > 0) return { i, kind: "resume" };
+  }
+  if (rand() < 0.2 || chunks.length < 4) return { i: 0, kind: "opening" };
+  const cands = [];
+  for (let i = 1; i < chunks.length - 1; i++) {
+    const [s, e] = chunks[i];
+    if (startsParagraph(text, s) && e - s >= 16) cands.push(i);
+  }
+  if (cands.length === 0) return { i: 0, kind: "opening" };
+  return { i: cands[Math.floor(rand() * cands.length)], kind: "excerpt" };
+}

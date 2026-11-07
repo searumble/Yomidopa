@@ -12,7 +12,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import {
-  chunkText, sentenceUnits, drawGacha, nextWorkAfter, similarity, rarityOf, seededRandom, TRIVIA_RATE,
+  chunkText, sentenceUnits, drawGacha, pickFeedWork, feedStart, chunkIndexAt, nextWorkAfter, similarity, rarityOf, seededRandom, TRIVIA_RATE,
 } from "../docs/engine.js";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -103,6 +103,32 @@ for (let k = 0; k < N; k++) {
 const rate = trivia / N;
 if (Math.abs(rate - TRIVIA_RATE) > 0.015) fail(`豆知識の出現率が ${rate.toFixed(3)}`);
 
+// ---- タイムライン: 投稿の最初の文章と、そこから「続きを読む」で伸びる文章 ----
+let feedPosts = 0;
+const feedKinds = { opening: 0, resume: 0, excerpt: 0 };
+{
+  const recent = [];
+  const pos = {};
+  for (let k = 0; k < 5000; k++) {
+    const interest = recent.slice(0, 3).map((id) => byId.get(id));
+    const meta = pickFeedWork(index, recent.slice(0, 12), interest, rand);
+    if (recent.slice(0, 12).includes(meta.id)) fail("最近出した作品がまた出た");
+    recent.unshift(meta.id);
+    const text = texts.get(meta.id), chunks = chunksOf.get(meta.id);
+    const { i, kind } = feedStart(text, chunks, pos[meta.id] || 0, rand);
+    feedKinds[kind]++;
+    feedPosts++;
+    if (i < 0 || i >= chunks.length) { fail(`${meta.id}: 投稿の開始位置がおかしい`); continue; }
+    if (kind === "resume" && chunks[i][0] < pos[meta.id]) fail(`${meta.id}: 読みかけより前から始まった`);
+    // 投稿の中で何回か「続きを読む」を押す: 出る文章は、最初の文章から切れ目なくつながった原文の一部
+    const presses = Math.floor(rand() * 4);
+    const last = Math.min(chunks.length - 1, i + presses);
+    const shown = text.slice(chunks[i][0], chunks[last][1]);
+    if (!orig.get(meta.id).norm.includes(norm(shown))) fail(`${meta.id}: 投稿の文章が原文にない @${chunks[i][0]}`);
+    if (presses > 0) pos[meta.id] = chunks[last][1];
+  }
+}
+
 // ---- 読み終えたら似た作品の冒頭へ ----
 for (const w of index) {
   const next = nextWorkAfter(index, w, [w.id], rand);
@@ -122,6 +148,7 @@ for (const w of index) {
   if (new Set(done).size !== index.length) fail("全作品をめぐれない");
 }
 
+console.log(`feed: ${feedPosts} 投稿 (冒頭 ${feedKinds.opening} / 読みかけ ${feedKinds.resume} / 抜き出し ${feedKinds.excerpt})`);
 console.log(`works: ${index.length}, chunks: ${chunkCount}, gacha: ${N} (豆知識 ${(rate * 100).toFixed(1)}% / 似た作品 ${similar}, ★${rarityCount[1]} ★★${rarityCount[2]} ★★★${rarityCount[3]})`);
 if (failures) {
   console.error(`FAILED: ${failures} 件`);
