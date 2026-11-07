@@ -275,6 +275,8 @@ function openHistory() {
 }
 const closeHistory = () => { $("history").hidden = true; };
 $("bell").addEventListener("click", () => ($("history").hidden ? openHistory() : closeHistory()));
+$("menu").addEventListener("click", () => { $("menu-sheet").hidden = false; });
+$("menu-sheet").addEventListener("click", (e) => { if (e.target.id === "menu-sheet" || e.target.closest(".close")) $("menu-sheet").hidden = true; });
 $("history").addEventListener("click", (e) => { if (e.target.id === "history" || e.target.closest(".close")) closeHistory(); });
 
 const PRESS_MARKS = [10, 100, 300, 1000, 3000, 10000];

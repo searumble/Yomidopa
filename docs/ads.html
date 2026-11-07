@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ヨミドーパに広告を出す</title>
+<meta name="theme-color" content="#f6f1e7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#16140f" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="pages.css">
+</head>
+<body>
+<header class="bar"><a class="back" href="./">‹ ヨミドーパ</a></header>
+<main class="page">
+  <h1>ヨミドーパに広告を出す</h1>
+  <p>ヨミドーパのタイムラインに、広告を投稿として載せられます。広告は必ず「PR」と表示し、読者が作品の文章とまちがえないようにします。</p>
+
+  <section class="box">
+    <h2>本の宣伝(PR投稿)</h2>
+    <p>あなたの本の一部(数文〜数百字)を、ほかの作品と同じ投稿の形で載せます。「続きを読む」の代わりに、本の購入ページや試し読みページへのリンクを付けられます。</p>
+    <table>
+      <tr><th>料金</th><td data-config="ads.book.price"></td></tr>
+      <tr><th>掲載期間</th><td data-config="ads.book.period"></td></tr>
+    </table>
+    <div class="pay" data-pay="ads.book"></div>
+  </section>
+
+  <section class="box">
+    <h2>一般の広告</h2>
+    <p>本以外の商品・サービス・イベントなどの広告です。短い文章と、リンク先を載せます。</p>
+    <table>
+      <tr><th>料金</th><td data-config="ads.general.price"></td></tr>
+      <tr><th>掲載期間</th><td data-config="ads.general.period"></td></tr>
+    </table>
+    <div class="pay" data-pay="ads.general"></div>
+  </section>
+
+  <h2>掲載までの流れ</h2>
+  <ol>
+    <li>この下の掲載基準を読み、申し込みフォームから広告の文章とリンク先を送ります。</li>
+    <li>運営が内容を確認します。掲載基準に合わない場合は、理由をお伝えしてお断りします。</li>
+    <li>掲載が決まったら、料金をお支払いください。お支払いの確認後に掲載を始めます。</li>
+  </ol>
+  <p class="note">申し込みフォームは準備中です。</p>
+
+  <h2>掲載基準</h2>
+  <ul>
+    <li><b>本の宣伝</b>は、その文章の著作権を持っている方(著者・出版社など)か、権利者から許可を得た方だけが申し込めます。申し込み時に確認していただきます。</li>
+    <li>広告はすべて「PR」と表示します。広告であることを隠した掲載はしません。</li>
+    <li>次のものは掲載しません: 法律に違反するもの、事実と異なる・大げさな表示、出会い系・ギャンブル・投資の勧誘、成人向けの内容、特定の人や団体を攻撃するもの、子どもが読むのにふさわしくないもの。</li>
+    <li>掲載後でも、基準に反すると分かった広告は取り下げることがあります。</li>
+  </ul>
+
+  <p class="note">お支払いの前に、<a href="tokushoho.html">特定商取引法に基づく表記</a>をご確認ください。</p>
+</main>
+<script type="module" src="page.js"></script>
+</body>
+</html>

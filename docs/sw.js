@@ -1,11 +1,17 @@
 // オフラインでも読めるようにするサービスワーカー
-const VERSION = "yomidopa-v8";
+const VERSION = "yomidopa-v9";
 const SHELL = [
   "./",
   "index.html",
   "style.css",
   "app.js",
   "engine.js",
+  "config.js",
+  "page.js",
+  "pages.css",
+  "support.html",
+  "ads.html",
+  "tokushoho.html",
   "manifest.webmanifest",
   "icons/icon.svg",
   "icons/icon-192.png",

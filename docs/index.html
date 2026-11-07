@@ -15,10 +15,12 @@
 <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="pages.css">
 </head>
 <body>
 <header class="bar">
   <div class="logo">ヨミドーパ</div>
+  <button class="bell" id="menu" type="button" aria-label="メニュー"><span aria-hidden="true">☰</span></button>
   <button class="bell" id="bell" type="button" aria-label="過去の通知"><span aria-hidden="true">🔔</span><span class="badge" id="badge" hidden></span></button>
 </header>
 
@@ -29,6 +31,17 @@
   <section class="sheet" role="dialog" aria-label="通知">
     <header><h2>通知</h2><button class="close" type="button">閉じる</button></header>
     <ul id="history-list"></ul>
+  </section>
+</div>
+
+<div class="history" id="menu-sheet" hidden>
+  <section class="sheet menu-sheet" role="dialog" aria-label="メニュー">
+    <header><h2>メニュー</h2><button class="close" type="button">閉じる</button></header>
+    <ul>
+      <li><a href="support.html">ヨミドーパを応援する</a></li>
+      <li><a href="ads.html">広告を出す</a></li>
+      <li><a href="tokushoho.html">特定商取引法に基づく表記</a></li>
+    </ul>
   </section>
 </div>
 

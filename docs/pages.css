@@ -1,0 +1,22 @@
+/* 応援・広告・特商法などの説明ページ用(色は style.css の変数を使う) */
+.page { max-width: 640px; margin: 0 auto; padding: calc(env(safe-area-inset-top) + 72px) 16px calc(env(safe-area-inset-bottom) + 48px); font-family: var(--gothic); line-height: 1.8; }
+.page h1 { font: 700 22px/1.4 var(--mincho); letter-spacing: .06em; margin: 8px 0 12px; }
+.page h2 { font: 700 17px/1.5 var(--mincho); margin: 28px 0 8px; }
+.page p, .page li { font-size: 15px; }
+.page .box { background: var(--paper); border: 1px solid var(--line); border-radius: 16px; padding: 16px; margin: 12px 0; }
+.page .note { font-size: 13px; color: var(--sub); }
+.page .pay { display: flex; flex-wrap: wrap; gap: 10px; margin: 10px 0 4px; }
+.page .pay a, .page .pay span {
+  display: inline-flex; align-items: center; justify-content: center; min-width: 96px; height: 44px; padding: 0 18px;
+  border-radius: 22px; font: 700 15px/1 var(--mincho); letter-spacing: .06em; text-decoration: none;
+}
+.page .pay a { background: var(--accent); color: var(--accent-ink); }
+.page .pay span { border: 1px dashed var(--line); color: var(--sub); }
+.page table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.page th, .page td { text-align: left; vertical-align: top; padding: 10px 8px; border-bottom: 1px solid var(--line); }
+.page th { width: 34%; color: var(--sub); font-weight: 600; }
+.back { color: var(--accent); text-decoration: none; font: 600 15px/1 var(--gothic); }
+.menu-sheet ul { padding: 0; }
+.menu-sheet li { display: block; padding: 0; }
+.menu-sheet li a { display: block; padding: 14px 16px; color: var(--ink); text-decoration: none; font-size: 15px; }
+.page .box h2 { margin-top: 0; }

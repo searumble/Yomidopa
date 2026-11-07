@@ -47,6 +47,13 @@ npm run test:e2e  # 実際のブラウザで300回押して、画面に出た文
 - 作者の生没年(`tools/catalog.json` の `born` `died`)は、青空文庫の作家別ページの「生年」「没年」と照合済みです(14人とも一致)。作者のエピソード(`episodes`)は、青空文庫の作家別ページの「人物について」と日本語版 Wikipedia(各作者の `sources`)と照合し、出典に書かれている範囲に合わせて文を直しています。
 - 収録作品はいずれも著作権の保護期間が終わった作品です。原文は「[青空文庫収録ファイルの取り扱い規準](https://www.aozora.gr.jp/guide/kijyunn.html)」にしたがって利用しています。
 
+## 応援・広告・いいね(準備中)
+- `docs/support.html`(応援)、`docs/ads.html`(広告の申し込み案内)、`docs/tokushoho.html`(特定商取引法に基づく表記)。アプリ右上の ☰ から開けます。
+- 決済リンク・運営者の表示名・連絡先・Supabase の URL は `docs/config.js` に書きます。空欄の項目は画面で「準備中」と表示されます。
+- 特定商取引法の表記は、販売事業者の氏名・住所・電話番号を「請求があれば遅滞なく開示」として省略する形です(法第11条ただし書。消費者庁「特定商取引法ガイド」の通信販売の広告規制のページで確認)。請求があったら、本当に遅滞なくメールで開示する必要があります。
+- `supabase/schema.sql`: いいね(一文単位)・フォロー・ブロック・広告申し込み・掲載広告のテーブルと権限(RLS)、「この作品をいいねした人はこちらもいいね」などの関数。Supabase の SQL Editor に貼って実行します。
+- `supabase/test/run.sh`: ローカルの PostgreSQL で schema.sql の権限と関数をテストします(22項目)。
+
 ## 作品を足すには
 1. aozorabunko_text から原文の .txt を `source/aozora/<作家ID>/files/...` に置く
 2. `tools/catalog.json` に `file` `genre` `tags` を足す(新しい作者なら `authors` にも)
