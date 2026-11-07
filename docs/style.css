@@ -84,7 +84,16 @@ body {
   box-shadow: 0 4px 14px rgba(0,0,0,.18); cursor: pointer;
   animation: drop .35s ease-out;
 }
-.top-card { margin: 14px 16px 4px; }
+.post.top-card { margin: 12px 12px 4px; border: 1px solid var(--line); border-radius: 16px; background: var(--card); animation: pop .45s cubic-bezier(.2,1.4,.4,1); }
+.post-gift { display: flex; justify-content: space-between; font: 600 13px/1.4 var(--gothic); color: var(--sub); margin-bottom: 6px; }
+.post-gift .stars { letter-spacing: 2px; }
+.post-tags { font: 12px/1.4 var(--gothic); color: var(--sub); }
+.post.top-card.r1 { border-color: color-mix(in srgb, var(--r1) 60%, var(--line)); }
+.post.top-card.r1 .stars { color: var(--r1); }
+.post.top-card.r2 { border-color: var(--r2); box-shadow: 0 0 0 1px var(--r2) inset; }
+.post.top-card.r2 .stars { color: var(--r2); }
+.post.top-card.r3 { border-color: var(--r3); box-shadow: 0 0 0 1px var(--r3) inset, 0 6px 26px color-mix(in srgb, var(--r3) 35%, transparent); }
+.post.top-card.r3 .stars { color: var(--r3); }
 @keyframes drop { from { opacity: 0; transform: translate(-50%, -10px); } }
 
 main {

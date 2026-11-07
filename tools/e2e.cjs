@@ -63,31 +63,36 @@ async function main() {
     }
   }
 
-  // タイムラインの一番上の 🎁 似た作品カード: 文章が原文どおりか。1枚タップして投稿に変わるか
+  // タイムラインの一番上の 🎁 似た作品: タップなしで読める投稿(「続きを読む」付き)になっていること
   const tops = await page.$$eval("#feed > .top-card", (cs) => cs.map((c) => ({
-    work: c.dataset.work, text: c.querySelector(".text").textContent, label: c.querySelector(".head span").textContent,
+    work: c.dataset.work, read: !!c.dataset.read,
+    text: [...c.querySelectorAll(".post-body p")].map((p) => p.textContent).join("\n"),
+    label: c.querySelector(".post-gift span")?.textContent, hasButton: !!c.querySelector("button.more"),
   })));
   for (const c of tops) {
     cards.similar++;
     checked++;
-    if (c.label !== "🎁 似た作品") ng("カードのラベル", c.label);
-    if (!byId.get(c.work)?.orig.includes(norm(c.text))) ng("カードの文章が原文にない", c.work);
+    if (c.label !== "🎁 似た作品") ng("似た作品のラベル", c.label);
+    if (!c.hasButton) ng("似た作品の投稿に「続きを読む」がない");
+    if (!byId.get(c.work)?.orig.includes(norm(c.text))) ng("似た作品の文章が原文にない", c.work);
   }
-  if (tops.length === 0) ng("似た作品カードが一番上に出ていない");
-  if (new Set(tops.map((c) => c.work)).size !== tops.length) ng("同じ作品のカードが重なっている");
-  else {
-    const n0 = await page.$$eval(".post", (p) => p.length);
-    await page.$eval("#feed > .top-card", (c) => c.click());
-    taps++;
-    const first = await page.$eval("#feed > *", (e) => e.className);
-    const n1 = await page.$$eval(".post", (p) => p.length);
-    if (!first.includes("post") || n1 !== n0 + 1) ng("カードをタップしても投稿にならない");
-    await page.click("#feed > .post .more", { force: true });
+  const unread = tops.filter((c) => !c.read);
+  if (tops.length === 0) ng("似た作品が一番上に出ていない");
+  if (new Set(unread.map((c) => c.work)).size !== unread.length) ng("まだ読んでいない同じ作品の投稿が重なっている");
+  if (unread.length > 5) ng("一番上の似た作品が多すぎる", unread.length);
+  if (tops.length) {
+    // 一番上の似た作品の「続きを読む」を、タップなしでそのまま押せること
+    const before = await page.$eval("#feed > .top-card .post-body", (b) => b.textContent.length);
+    await page.click("#feed > .top-card .more", { force: true });
     await page.waitForFunction(() => !document.body.dataset.busy);
+    taps++;
+    const after = await page.$eval("#feed > .top-card .post-body", (b) => b.textContent.length).catch(() => before + 1);
+    if (!(after > before)) ng("一番上の似た作品の続きが読めない");
   }
   for (const n of await page.evaluate(() => window.__yomiNotes)) {
     if (n.kind === "trivia") trivia.add(`${n.icon} ${n.text}`);
     if (n.kind === "praise" && /上位|位|%|人が/.test(n.text)) ng("ほめる通知に統計や他人の話", n.text);
+    if (n.kind === "praise" && /を30回|5,000文字|はじめてです|半分まで/.test(n.text)) ng("消したはずの通知", n.text);
   }
   // 通知に出た豆知識が、作品の豆知識表(書誌から作ったもの)にあること
   const allFacts = new Set(index.flatMap((w) => w.facts.map((f) => f.t)));
@@ -123,7 +128,7 @@ async function main() {
   await page.screenshot({ path: path.join(process.env.SHOT_DIR || ROOT, "e2e-last.png") });
   await browser.close();
   server.close();
-  console.log(`presses: ${PRESSES}, 投稿: ${posts.length} (${titles.size}作品), 通知に出た豆知識: ${cards.trivia}種, 一番上の似た作品カード: ${cards.similar}枚, タップで投稿化: ${taps}, 照合: ${checked}`);
+  console.log(`presses: ${PRESSES}, 投稿: ${posts.length} (${titles.size}作品), 通知に出た豆知識: ${cards.trivia}種, 一番上の似た作品: ${cards.similar}件, その場で続きを読めた: ${taps}, 照合: ${checked}`);
   if (bad) { console.error(`FAILED: ${bad}`); process.exit(1); }
   console.log("OK: 画面に出た文章はすべて原文の連続した部分でした。");
 }

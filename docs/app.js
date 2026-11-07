@@ -102,6 +102,7 @@ async function readMore(state) {
       post.scrollIntoView({ behavior: "smooth", block: "start" });
       return;
     }
+    state.post.dataset.read = "1";
     const { e } = appendChunk(state, state.next, "fresh");
     st.pos[meta.id] = e;
     st.last = meta.id;
@@ -140,29 +141,22 @@ async function showGacha(state) {
   let i = chunkIndexAt(w.chunks, st.pos[g.work.id] || 0);
   if (i === -1) i = 0;
   const [s, e] = w.chunks[i];
-  const card = el("div", `card similar top-card r${g.rarity}`);
-  card.dataset.work = g.work.id;
-  const head = el("div", "head");
-  head.append(el("span", "", "🎁 似た作品"), el("span", "stars", "★".repeat(g.rarity)));
-  const meta = el("div", "meta");
-  meta.append(el("b", "", g.work.title), `　${g.work.author}`);
-  if (g.shared.length) meta.append(el("br"), g.shared.map((t) => `#${t}`).join(" "));
-  card.append(head, el("div", "text", w.text.slice(s, e).replace(/^[ 　]+/, "")), meta);
-  card.addEventListener("click", () => {
-    // タップ: カードがその場で投稿に変わる(カードの文章から始まり、続きはその作品の本当の続き)
-    const post = makePost(g.work, w, i, "similar");
-    keepScroll(() => card.replaceWith(post));
-    notePosted(g.work.id);
-    buzz(10);
-  });
-  // タイムラインの一番上に足す。いま読んでいる位置はずらさない
+  // タイムラインの一番上に、すぐ読める投稿として出す(「続きを読む」付き)
+  const post = makePost(g.work, w, i, "none");
+  post.classList.add("top-card", `r${g.rarity}`);
+  const head = post.querySelector(".post-head");
+  const badge = el("div", "post-gift");
+  badge.append(el("span", "", "🎁 似た作品"), el("span", "stars", "★".repeat(g.rarity)));
+  head.before(badge);
+  if (g.shared.length) head.append(el("span", "post-tags", g.shared.map((t) => `#${t}`).join(" ")));
   keepScroll(() => {
-    // 同じ作品のカードがすでに上にあれば、新しいほうに置きかえる(重ねて出さない)
-    feed.querySelectorAll(`:scope > .top-card[data-work="${g.work.id}"]`).forEach((c) => c.remove());
-    feed.prepend(card);
-    const tops = feed.querySelectorAll(":scope > .top-card");
+    // まだ読んでいない同じ作品の投稿が上にあれば、新しいほうに置きかえる(重ねて出さない)
+    feed.querySelectorAll(`:scope > .top-card:not([data-read])[data-work="${g.work.id}"]`).forEach((c) => c.remove());
+    feed.prepend(post);
+    const tops = feed.querySelectorAll(":scope > .top-card:not([data-read])");
     for (let k = MAX_TOP_CARDS; k < tops.length; k++) tops[k].remove();
   });
+  notePosted(g.work.id);
   showNewPill(g.rarity);
   confetti(null, [0, 16, 60, 170][g.rarity], g.rarity === 3);
   buzz([[15], [20, 40, 20], [40, 50, 40, 50, 120]][g.rarity - 1]);
@@ -246,18 +240,13 @@ function showNextToast() {
 }
 $("toast").addEventListener("click", () => { clearTimeout(toastTimer); showNextToast(); });
 
-const PRESS_MARKS = [10, 30, 100, 300, 1000, 3000, 10000];
-const CHAR_MARKS = [1000, 5000, 10000, 30000, 50000, 100000, 200000, 300000];
+const PRESS_MARKS = [10, 100, 300, 1000, 3000, 10000];
+const CHAR_MARKS = [1000, 10000, 30000, 50000, 100000, 200000, 300000];
 const DONE_MARKS = [3, 5, 10, 20, 30, 40];
 function checkPraise(meta, w, end) {
   if (st.presses === 1) praise("first", "はじめて続きを読みました。ようこそ、ヨミドーパへ。");
   for (const n of PRESS_MARKS) if (st.presses === n) praise(`p${n}`, `「続きを読む」を${n}回押しました。よく読んでいますね。`);
   for (const n of CHAR_MARKS) if (st.chars >= n) praise(`c${n}`, `これまでに${n.toLocaleString("ja-JP")}文字の本文を読みました。`);
-  if (!st.authors.includes(meta.authorId)) {
-    st.authors.push(meta.authorId);
-    if (st.authors.length > 1) praise(`a${meta.authorId}`, `${meta.author}の続きを読むのは、これがはじめてです。新しい出会いですね。`);
-  }
-  if (end >= w.text.length / 2 && end < w.text.length) praise(`h${meta.id}`, `『${meta.title}』を半分まで読みました。`);
 }
 function onFinished(meta) {
   if (!st.done.includes(meta.id)) st.done.push(meta.id);
