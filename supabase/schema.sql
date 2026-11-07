@@ -80,6 +80,16 @@ create table if not exists public.ads (
   check (ends_at > starts_at)
 );
 
+-- ===== テーブルの使用許可 =====
+-- 「Automatically expose new tables」をオフにしたプロジェクトでも動くように、必要な分だけ明示的に許可する。
+-- (実際にどの行を読み書きできるかは、下の RLS で決まる)
+grant usage on schema public to anon, authenticated;
+grant select on public.profiles, public.likes, public.follows, public.ads to anon, authenticated;
+grant insert, update on public.profiles to authenticated;
+grant insert, delete on public.likes, public.follows to authenticated;
+grant select, insert, delete on public.blocks to authenticated;
+grant select, insert on public.ad_applications to authenticated;
+
 -- ===== 行ごとの権限(RLS) =====
 alter table public.profiles enable row level security;
 alter table public.likes enable row level security;

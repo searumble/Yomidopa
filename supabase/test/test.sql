@@ -16,12 +16,15 @@ begin
   end;
   raise exception 'NG: 通ってしまった: %', label;
 end $$;
+-- 実行できても0行、または権限エラーなら 0 を返す(どちらも「変更できなかった」)
 create or replace function pg_temp.affected(sql text) returns int language plpgsql as $$
 declare n int;
 begin
   execute sql;
   get diagnostics n = row_count;
   return n;
+exception when insufficient_privilege then
+  return 0;
 end $$;
 create or replace function pg_temp.expect(cond boolean, label text) returns void language plpgsql as $$
 begin
@@ -81,6 +84,6 @@ set role anon;
 select set_config('request.jwt.claim.sub', '', false);
 select pg_temp.expect((select count(*) from public.likes) = 7, 'ログインなしでもいいねの数は読める');
 select pg_temp.expect_fail($$insert into public.likes (user_id, work_id, sent_start, sent_end) values ('11111111-1111-1111-1111-111111111111', '1', 0, 5)$$, 'ログインなしではいいねできない');
-select pg_temp.expect((select count(*) from public.ad_applications) = 0, 'ログインなしでは広告申し込みは見えない');
+select pg_temp.expect(pg_temp.affected($$select 1 from public.ad_applications$$) = 0, 'ログインなしでは広告申し込みは見えない');
 reset role;
 \echo ALL_OK

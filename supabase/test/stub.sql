@@ -11,4 +11,4 @@ $$;
 grant usage on schema auth to anon, authenticated;
 grant execute on function auth.uid() to anon, authenticated;
 grant usage on schema public to anon, authenticated;
-alter default privileges in schema public grant select, insert, update, delete on tables to anon, authenticated;
+-- 本番で「Automatically expose new tables」をオフにした状態と同じく、テーブルの自動許可はしない
