@@ -40,6 +40,7 @@ async function main() {
   await page.waitForSelector(".post .more");
 
   let bad = 0, checked = 0, taps = 0;
+  const trivia = new Set();
   const cards = { trivia: 0, similar: 0 };
   const ng = (...a) => { bad++; console.error("NG", ...a); };
 
@@ -54,26 +55,47 @@ async function main() {
     const btn = buttons[(k * 7) % buttons.length];
     await btn.click({ force: true });
     await page.waitForFunction(() => !document.body.dataset.busy);
-    const card = await btn.evaluate((b) => {
-      const post = b.closest(".post");
-      if (!post) return null; // 読み終えた投稿のボタンは、次の作品を出したあと消える
-      const c = post.querySelector(".post-slot .card");
-      if (!c) return null;
-      return { cls: c.className, text: c.querySelector(".text").textContent, title: c.querySelector("b")?.textContent || null, label: c.querySelector(".head span").textContent };
-    });
-    if (!card) continue;
-    if (card.cls.includes("similar")) {
-      cards.similar++;
-      checked++;
-      if (card.label !== "🎁 似た作品") ng("カードのラベル", card.label);
-      if (!byTitle.get(card.title)?.orig.includes(norm(card.text))) ng("カードの文章が原文にない", card.title);
-      if (k % 9 === 0) {
-        await btn.evaluate((b) => b.closest(".post").querySelector(".post-slot .card.similar").click());
-        taps++;
-        await page.waitForTimeout(30);
-      }
-    } else cards.trivia++;
+    // 豆知識は通知(トースト)に出る
+    const toast = await page.$eval("#toast", (t) => (t.hidden ? null : { cls: t.className, text: t.textContent }));
+    if (toast && toast.cls.includes("trivia")) {
+      trivia.add(toast.text);
+      if (!toast.text.startsWith("📜 ")) ng("豆知識の通知の形", toast.text);
+    }
   }
+
+  // タイムラインの一番上の 🎁 似た作品カード: 文章が原文どおりか。1枚タップして投稿に変わるか
+  const tops = await page.$$eval("#feed > .top-card", (cs) => cs.map((c) => ({
+    work: c.dataset.work, text: c.querySelector(".text").textContent, label: c.querySelector(".head span").textContent,
+  })));
+  for (const c of tops) {
+    cards.similar++;
+    checked++;
+    if (c.label !== "🎁 似た作品") ng("カードのラベル", c.label);
+    if (!byId.get(c.work)?.orig.includes(norm(c.text))) ng("カードの文章が原文にない", c.work);
+  }
+  if (tops.length === 0) ng("似た作品カードが一番上に出ていない");
+  if (new Set(tops.map((c) => c.work)).size !== tops.length) ng("同じ作品のカードが重なっている");
+  else {
+    const n0 = await page.$$eval(".post", (p) => p.length);
+    await page.$eval("#feed > .top-card", (c) => c.click());
+    taps++;
+    const first = await page.$eval("#feed > *", (e) => e.className);
+    const n1 = await page.$$eval(".post", (p) => p.length);
+    if (!first.includes("post") || n1 !== n0 + 1) ng("カードをタップしても投稿にならない");
+    await page.click("#feed > .post .more", { force: true });
+    await page.waitForFunction(() => !document.body.dataset.busy);
+  }
+  for (const n of await page.evaluate(() => window.__yomiNotes)) {
+    if (n.kind === "trivia") trivia.add(`${n.icon} ${n.text}`);
+    if (n.kind === "praise" && /上位|位|%|人が/.test(n.text)) ng("ほめる通知に統計や他人の話", n.text);
+  }
+  // 通知に出た豆知識が、作品の豆知識表(書誌から作ったもの)にあること
+  const allFacts = new Set(index.flatMap((w) => w.facts.map((f) => f.t)));
+  for (const t of trivia) {
+    checked++;
+    if (!allFacts.has(t.replace(/^📜 /, ""))) ng("書誌にない豆知識", t);
+  }
+  cards.trivia = trivia.size;
 
   // すべての投稿: 本文が、その作品の原文の切れ目のない一部であること
   const posts = await page.$$eval(".post", (ps) => ps.map((p) => ({
@@ -101,7 +123,7 @@ async function main() {
   await page.screenshot({ path: path.join(process.env.SHOT_DIR || ROOT, "e2e-last.png") });
   await browser.close();
   server.close();
-  console.log(`presses: ${PRESSES}, 投稿: ${posts.length} (${titles.size}作品), カード: 豆知識 ${cards.trivia} / 似た作品 ${cards.similar}, タップで投稿追加: ${taps}, 照合: ${checked}`);
+  console.log(`presses: ${PRESSES}, 投稿: ${posts.length} (${titles.size}作品), 通知に出た豆知識: ${cards.trivia}種, 一番上の似た作品カード: ${cards.similar}枚, タップで投稿化: ${taps}, 照合: ${checked}`);
   if (bad) { console.error(`FAILED: ${bad}`); process.exit(1); }
   console.log("OK: 画面に出た文章はすべて原文の連続した部分でした。");
 }

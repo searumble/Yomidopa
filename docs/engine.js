@@ -50,21 +50,27 @@ export function sentenceUnits(text) {
 }
 
 /**
- * 「続きを読む」1回分のかたまり(1〜2文)に分ける。
- * 短い文(見出し・詩の行・短い台詞)は次の文と合わせて2文にする。3文以上は合わせない。
+ * 投稿・「続きを読む」1回分のかたまり(2〜3文)に分ける。
+ * 2文目は合わせて220字まで、3文目は合わせて160字までなら加える。空行(場面の切れ目)はまたがない。
  */
+export const MAX_UNITS = 3;
 export function chunkText(text) {
   const units = sentenceUnits(text);
   const chunks = [];
-  for (let k = 0; k < units.length; k++) {
-    const [s, e] = units[k];
-    const next = units[k + 1];
-    if (next && e - s < 28 && next[1] - s <= 90 && !text.slice(e, next[0]).includes("\n\n")) {
-      chunks.push([s, next[1]]);
-      k++;
-    } else {
-      chunks.push([s, e]);
+  let k = 0;
+  while (k < units.length) {
+    const s = units[k][0];
+    let e = units[k][1];
+    let n = 1;
+    while (k + n < units.length && n < MAX_UNITS) {
+      const [ns, ne] = units[k + n];
+      const limit = n === 1 ? 220 : 160;
+      if (ne - s > limit || text.slice(e, ns).includes("\n\n")) break;
+      e = ne;
+      n++;
     }
+    chunks.push([s, e]);
+    k += n;
   }
   return chunks;
 }

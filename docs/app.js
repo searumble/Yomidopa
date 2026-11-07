@@ -1,7 +1,7 @@
 import { chunkText, chunkIndexAt, drawGacha, nextWorkAfter, pickFeedWork, feedStart } from "./engine.js";
 
 const $ = (id) => document.getElementById(id);
-const feed = $("feed"), sentinel = $("sentinel");
+const feed = $("feed"), sentinel = $("sentinel"), scroller = $("scroller");
 const KEY = "yomidopa:v2";
 
 // ---------- 保存(作品ごとの読書位置など。すべてこの端末の中だけ) ----------
@@ -47,14 +47,13 @@ function makePost(meta, w, first, kind) {
   head.append(el("b", "post-title", meta.title), el("span", "post-author", meta.author));
   if (KIND_LABEL[kind]) head.append(el("span", "post-kind", KIND_LABEL[kind]));
   const body = el("div", "post-body");
-  const slot = el("div", "post-slot");
   const foot = el("footer", "post-foot");
   const btn = el("button", "more", "続きを読む");
   btn.type = "button";
   foot.append(btn);
-  post.append(head, body, slot, foot);
+  post.append(head, body, foot);
 
-  const state = { meta, w, next: first, lastP: null, busy: false, post, body, slot, btn };
+  const state = { meta, w, next: first, lastP: null, busy: false, post, body, btn };
   appendChunk(state, first, "");
   btn.addEventListener("click", () => readMore(state));
   return post;
@@ -126,17 +125,13 @@ async function readMore(state) {
   }
 }
 
-// ---------- ガチャ(押すたび: 40% 豆知識 / 残り 似た作品) ----------
+// ---------- ガチャ(押すたび: 40% 豆知識 → 通知 / 残り 似た作品 → タイムラインの一番上) ----------
+const MAX_TOP_CARDS = 5;
 async function showGacha(state) {
   const g = drawGacha(index, state.meta, Math.random);
-  state.slot.innerHTML = "";
   if (!g) return;
   if (g.type === "trivia") {
-    const card = el("div", "card trivia");
-    const head = el("div", "head");
-    head.append(el("span", "", "📜 豆知識"));
-    card.append(head, el("div", "text", g.fact.t), el("div", "meta", "青空文庫 図書カード・底本の書誌より"));
-    state.slot.append(card);
+    notify("📜", g.fact.t, "trivia");
     buzz(8);
     return;
   }
@@ -145,7 +140,8 @@ async function showGacha(state) {
   let i = chunkIndexAt(w.chunks, st.pos[g.work.id] || 0);
   if (i === -1) i = 0;
   const [s, e] = w.chunks[i];
-  const card = el("div", `card similar r${g.rarity}`);
+  const card = el("div", `card similar top-card r${g.rarity}`);
+  card.dataset.work = g.work.id;
   const head = el("div", "head");
   head.append(el("span", "", "🎁 似た作品"), el("span", "stars", "★".repeat(g.rarity)));
   const meta = el("div", "meta");
@@ -153,17 +149,39 @@ async function showGacha(state) {
   if (g.shared.length) meta.append(el("br"), g.shared.map((t) => `#${t}`).join(" "));
   card.append(head, el("div", "text", w.text.slice(s, e).replace(/^[ 　]+/, "")), meta);
   card.addEventListener("click", () => {
-    // タップ: その作品を新しい投稿として、すぐ下に出す(カードの文章から始まり、続きはその作品の本当の続き)
+    // タップ: カードがその場で投稿に変わる(カードの文章から始まり、続きはその作品の本当の続き)
     const post = makePost(g.work, w, i, "similar");
-    state.post.after(post);
-    state.slot.innerHTML = "";
+    keepScroll(() => card.replaceWith(post));
     notePosted(g.work.id);
     buzz(10);
-    post.scrollIntoView({ behavior: "smooth", block: "start" });
   });
-  state.slot.append(card);
-  confetti(state.slot, [0, 16, 60, 170][g.rarity], g.rarity === 3);
+  // タイムラインの一番上に足す。いま読んでいる位置はずらさない
+  keepScroll(() => {
+    // 同じ作品のカードがすでに上にあれば、新しいほうに置きかえる(重ねて出さない)
+    feed.querySelectorAll(`:scope > .top-card[data-work="${g.work.id}"]`).forEach((c) => c.remove());
+    feed.prepend(card);
+    const tops = feed.querySelectorAll(":scope > .top-card");
+    for (let k = MAX_TOP_CARDS; k < tops.length; k++) tops[k].remove();
+  });
+  showNewPill(g.rarity);
+  confetti(null, [0, 16, 60, 170][g.rarity], g.rarity === 3);
   buzz([[15], [20, 40, 20], [40, 50, 40, 50, 120]][g.rarity - 1]);
+}
+
+/** 上に要素を足しても、画面に見えている投稿の位置が動かないようにする。 */
+function keepScroll(change) {
+  const anchor = [...feed.querySelectorAll(".post")].find((p) => p.getBoundingClientRect().bottom > 60);
+  const before = anchor ? anchor.getBoundingClientRect().top : 0;
+  change();
+  if (anchor && anchor.isConnected) scroller.scrollTop += anchor.getBoundingClientRect().top - before;
+}
+
+/** 「↑ 🎁」の小さな目印。タップすると一番上へ。 */
+function showNewPill(rarity) {
+  const pill = $("pill");
+  if (scroller.scrollTop < 40) { pill.hidden = true; return; }
+  pill.textContent = `↑ 🎁 似た作品 ${"★".repeat(rarity)}`;
+  pill.hidden = false;
 }
 
 // ---------- タイムラインの読みこみ(下までスクロールしたら足す) ----------
@@ -186,21 +204,30 @@ async function addPosts(n) {
       const { i, kind } = feedStart(w.text, w.chunks, st.pos[meta.id] || 0, Math.random);
       feed.append(makePost(meta, w, i, kind));
     }
-    while (feed.childElementCount > 150) feed.firstElementChild.remove();
   } finally {
     loading = false;
   }
 }
 
-// ---------- 通知(読書をほめる。数字はすべてこの端末の本当の記録) ----------
+// ---------- 通知(🔔 読書をほめる / 📜 豆知識。数字はすべてこの端末の本当の記録) ----------
 const queue = [];
 let toastTimer = null;
+const noteLog = (window.__yomiNotes = []); // 検証用
+function notify(icon, text, kind) {
+  noteLog.push({ icon, text, kind });
+  if (noteLog.length > 500) noteLog.shift();
+  // 豆知識は、まだ出ていないものがあれば新しいものに置きかえる(たまりすぎないように)
+  if (kind === "trivia") {
+    for (let k = queue.length - 1; k >= 0; k--) if (queue[k].kind === "trivia") queue.splice(k, 1);
+  }
+  queue.push({ icon, text, kind });
+  updateBadge();
+  if (!toastTimer) showNextToast();
+}
 function praise(key, msg) {
   if (st.seen[key]) return;
   st.seen[key] = 1;
-  queue.push(msg);
-  updateBadge();
-  if (!toastTimer) showNextToast();
+  notify("🔔", msg, "praise");
 }
 function updateBadge() {
   const n = queue.length + (toastTimer ? 1 : 0);
@@ -209,11 +236,12 @@ function updateBadge() {
 }
 function showNextToast() {
   const t = $("toast");
-  const msg = queue.shift();
-  if (!msg) { t.hidden = true; toastTimer = null; updateBadge(); return; }
-  t.textContent = msg;
+  const item = queue.shift();
+  if (!item) { t.hidden = true; toastTimer = null; updateBadge(); return; }
+  t.textContent = `${item.icon} ${item.text}`;
+  t.className = `toast ${item.kind}`;
   t.hidden = false;
-  toastTimer = setTimeout(showNextToast, 4800);
+  toastTimer = setTimeout(showNextToast, item.kind === "trivia" ? 6500 : 4800);
   updateBadge();
 }
 $("toast").addEventListener("click", () => { clearTimeout(toastTimer); showNextToast(); });
@@ -247,8 +275,7 @@ function confetti(anchor, n, gold) {
   const dpr = devicePixelRatio || 1;
   cv.width = innerWidth * dpr; cv.height = innerHeight * dpr;
   cx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  const r = anchor.getBoundingClientRect();
-  const ox = innerWidth / 2, oy = Math.min(innerHeight * 0.8, Math.max(80, r.top + 20));
+  const ox = innerWidth / 2, oy = anchor ? Math.min(innerHeight * 0.8, Math.max(80, anchor.getBoundingClientRect().top + 20)) : innerHeight * 0.45;
   const colors = gold ? ["#e0b955", "#f3d27a", "#c99a2e", "#fff3c4", "#d8735b"] : ["#d8735b", "#84a6d6", "#8fa192", "#e0b955", "#c78fc0"];
   for (let i = 0; i < n; i++) {
     const a = -Math.PI / 2 + (Math.random() - 0.5) * 1.9;
@@ -292,6 +319,8 @@ async function start() {
     if (ents.some((e) => e.isIntersecting)) addPosts(5);
   }, { rootMargin: "1200px 0px" }).observe(sentinel);
 }
+$("pill").addEventListener("click", () => { $("pill").hidden = true; scroller.scrollTo({ top: 0, behavior: "smooth" }); });
+scroller.addEventListener("scroll", () => { if (scroller.scrollTop < 40) $("pill").hidden = true; }, { passive: true });
 start().catch((e) => {
   console.error(e);
   $("toast").textContent = "読みこみに失敗しました。通信を確認して開きなおしてください。";

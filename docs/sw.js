@@ -1,5 +1,5 @@
 // オフラインでも読めるようにするサービスワーカー
-const VERSION = "yomidopa-v2";
+const VERSION = "yomidopa-v3";
 const SHELL = [
   "./",
   "index.html",

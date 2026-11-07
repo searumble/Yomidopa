@@ -12,7 +12,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import {
-  chunkText, sentenceUnits, drawGacha, pickFeedWork, feedStart, chunkIndexAt, nextWorkAfter, similarity, rarityOf, seededRandom, TRIVIA_RATE,
+  chunkText, sentenceUnits, MAX_UNITS, drawGacha, pickFeedWork, feedStart, chunkIndexAt, nextWorkAfter, similarity, rarityOf, seededRandom, TRIVIA_RATE,
 } from "../docs/engine.js";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -32,6 +32,7 @@ const orig = new Map();
 const texts = new Map();
 const chunksOf = new Map();
 let chunkCount = 0;
+const unitHist = [0, 0, 0, 0, 0];
 
 for (const w of index) {
   const o = original(w.source);
@@ -56,7 +57,8 @@ for (const w of index) {
     // 行の途中でつながるときは、あいだに1字もはさまないこと(画面では前の段落にそのままつなぐため)
     if (!skipped.includes("\n") && skipped !== "") fail(`${w.id}: 行の途中で空白を飛ばしている @${prevEnd}`);
     const nUnits = sentenceUnits(piece).length;
-    if (nUnits > 2 && !piece.includes("\n")) fail(`${w.id}: 3文以上のチャンク @${s}`);
+    if (nUnits > MAX_UNITS && !piece.includes("\n")) fail(`${w.id}: ${MAX_UNITS + 1}文以上のチャンク @${s}`);
+    unitHist[Math.min(nUnits, 4)]++;
     prevEnd = e;
   }
   if (data.text.slice(prevEnd).trim() !== "") fail(`${w.id}: 末尾が読まれない`);
@@ -148,6 +150,7 @@ for (const w of index) {
   if (new Set(done).size !== index.length) fail("全作品をめぐれない");
 }
 
+console.log(`1チャンクの文の数: 1文 ${unitHist[1]} / 2文 ${unitHist[2]} / 3文 ${unitHist[3]}`);
 console.log(`feed: ${feedPosts} 投稿 (冒頭 ${feedKinds.opening} / 読みかけ ${feedKinds.resume} / 抜き出し ${feedKinds.excerpt})`);
 console.log(`works: ${index.length}, chunks: ${chunkCount}, gacha: ${N} (豆知識 ${(rate * 100).toFixed(1)}% / 似た作品 ${similar}, ★${rarityCount[1]} ★★${rarityCount[2]} ★★★${rarityCount[3]})`);
 if (failures) {
