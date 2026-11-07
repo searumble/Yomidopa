@@ -195,99 +195,153 @@
       "name": "坂口安吾",
       "born": "1906-10-20",
       "died": "1955-02-17",
-      "episodes": [],
+      "episodes": [
+        "坂口安吾の本名は坂口炳五です。終戦直後に発表した『堕落論』『白痴』で、一躍時代の寵児になりました。",
+        "坂口安吾は檀一雄の家に居候していたころ、妻に「ライスカレーを百人前頼んでこい」と言いつけ、庭に出前が積み上がる「ライスカレー百人前事件」を起こしました。",
+        "坂口安吾は芥川賞の選考委員を務め、松本清張らを推しました。"
+      ],
       "sources": [
-        "https://www.aozora.gr.jp/index_pages/person1095.html"
+        "https://www.aozora.gr.jp/index_pages/person1095.html",
+        "https://ja.wikipedia.org/wiki/%E5%9D%82%E5%8F%A3%E5%AE%89%E5%90%BE"
       ]
     },
     "000064": {
       "name": "樋口一葉",
       "born": "1872-05-02",
       "died": "1896-11-23",
-      "episodes": [],
+      "episodes": [
+        "樋口一葉の肖像は、2004年11月発行分から五千円札に採用されました。",
+        "樋口一葉は『たけくらべ』『にごりえ』『十三夜』などをわずか1年半ほどのあいだに発表し、24歳の若さで肺結核のため亡くなりました。",
+        "樋口一葉の本名は樋口奈津です。「夏子」と書くことも多くありました。"
+      ],
       "sources": [
-        "https://www.aozora.gr.jp/index_pages/person64.html"
+        "https://www.aozora.gr.jp/index_pages/person64.html",
+        "https://ja.wikipedia.org/wiki/%E6%A8%8B%E5%8F%A3%E4%B8%80%E8%91%89"
       ]
     },
     "000050": {
       "name": "泉鏡花",
       "born": "1873-11-04",
       "died": "1939-09-07",
-      "episodes": [],
+      "episodes": [
+        "泉鏡花は極度の潔癖症として知られ、生ものは食べませんでした。",
+        "泉鏡花は酉年生まれで、その向かいの干支にあたる兎にちなむ品をたくさん集めていました。",
+        "泉鏡花は尾崎紅葉に師事し、『夜行巡査』『外科室』で評価を得て、『高野聖』で人気作家になりました。"
+      ],
       "sources": [
-        "https://www.aozora.gr.jp/index_pages/person50.html"
+        "https://www.aozora.gr.jp/index_pages/person50.html",
+        "https://ja.wikipedia.org/wiki/%E6%B3%89%E9%8F%A1%E8%8A%B1"
       ]
     },
     "000038": {
       "name": "国木田独歩",
       "born": "1871-08-30",
       "died": "1908-06-23",
-      "episodes": [],
+      "episodes": [
+        "国木田独歩は、今も続く雑誌『婦人画報』を創刊した編集者でもあります。",
+        "国木田独歩は会社が破産し肺結核にかかりましたが、皮肉にもそのころ作品集『運命』が高く評価され、文壇の注目を集めました。"
+      ],
       "sources": [
-        "https://www.aozora.gr.jp/index_pages/person38.html"
+        "https://www.aozora.gr.jp/index_pages/person38.html",
+        "https://ja.wikipedia.org/wiki/%E5%9B%BD%E6%9C%A8%E7%94%B0%E7%8B%AC%E6%AD%A9"
       ]
     },
     "000076": {
       "name": "岡本かの子",
       "born": "1889-03-01",
       "died": "1939-02-18",
-      "episodes": [],
+      "episodes": [
+        "岡本かの子は漫画家の岡本一平と結婚し、芸術家の岡本太郎を生みました。",
+        "岡本かの子は若いころ与謝野晶子に師事した歌人でした。小説家として本格的に登場したのは晩年のことです。"
+      ],
       "sources": [
-        "https://www.aozora.gr.jp/index_pages/person76.html"
+        "https://www.aozora.gr.jp/index_pages/person76.html",
+        "https://ja.wikipedia.org/wiki/%E5%B2%A1%E6%9C%AC%E3%81%8B%E3%81%AE%E5%AD%90"
       ]
     },
     "000040": {
       "name": "織田作之助",
       "born": "1913-10-26",
       "died": "1947-01-10",
-      "episodes": [],
+      "episodes": [
+        "織田作之助は「オダサク」の愛称で親しまれ、太宰治や坂口安吾らと「無頼派」と呼ばれました。",
+        "織田作之助は妻の一枝を亡くしたあと、最期まで一枝の写真と遺髪を肌身離さず持ち歩いていました。",
+        "織田作之助は『夫婦善哉』で作家としての地位を確立しました。"
+      ],
       "sources": [
-        "https://www.aozora.gr.jp/index_pages/person40.html"
+        "https://www.aozora.gr.jp/index_pages/person40.html",
+        "https://ja.wikipedia.org/wiki/%E7%B9%94%E7%94%B0%E4%BD%9C%E4%B9%8B%E5%8A%A9"
       ]
     },
     "001030": {
       "name": "堀辰雄",
       "born": "1904-12-28",
       "died": "1953-05-28",
-      "episodes": [],
+      "episodes": [
+        "堀辰雄は関東大震災のとき隅田川に逃れて九死に一生を得ましたが、母を亡くしました。",
+        "堀辰雄は肺結核を病み、たびたび軽井沢で療養しました。晩年は軽井沢を終のすみかにしました。",
+        "堀辰雄は震災の年、室生犀星の紹介で芥川龍之介と出会いました。"
+      ],
       "sources": [
-        "https://www.aozora.gr.jp/index_pages/person1030.html"
+        "https://www.aozora.gr.jp/index_pages/person1030.html",
+        "https://ja.wikipedia.org/wiki/%E5%A0%80%E8%BE%B0%E9%9B%84"
       ]
     },
     "000153": {
       "name": "石川啄木",
       "born": "1886-02-20",
       "died": "1912-04-13",
-      "episodes": [],
+      "episodes": [
+        "石川啄木の本名は石川一です。満19歳で最初の詩集を出しました。",
+        "石川啄木の歌集『一握の砂』は、短歌を三行に分けて書く新しい形で、啄木は歌人として名声を得ました。",
+        "石川啄木は結核のため、満26歳で亡くなりました。"
+      ],
       "sources": [
-        "https://www.aozora.gr.jp/index_pages/person153.html"
+        "https://www.aozora.gr.jp/index_pages/person153.html",
+        "https://ja.wikipedia.org/wiki/%E7%9F%B3%E5%B7%9D%E5%95%84%E6%9C%A8"
       ]
     },
     "001779": {
       "name": "江戸川乱歩",
       "born": "1894-10-21",
       "died": "1965-07-28",
-      "episodes": [],
+      "episodes": [
+        "「江戸川乱歩」という筆名は、小説家エドガー・アラン・ポーのもじりです。本名は平井太郎です。",
+        "江戸川乱歩が1936年に発表した『怪人二十面相』は、少年たちに圧倒的な人気を得てシリーズになりました。",
+        "江戸川乱歩は日本推理作家協会の初代理事長を務めました。"
+      ],
       "sources": [
-        "https://www.aozora.gr.jp/index_pages/person1779.html"
+        "https://www.aozora.gr.jp/index_pages/person1779.html",
+        "https://ja.wikipedia.org/wiki/%E6%B1%9F%E6%88%B8%E5%B7%9D%E4%B9%B1%E6%AD%A9"
       ]
     },
     "000096": {
       "name": "夢野久作",
       "born": "1889-01-04",
       "died": "1936-03-11",
-      "episodes": [],
+      "episodes": [
+        "夢野久作は、陸軍少尉、禅僧、新聞記者、郵便局長という経歴を持っています。",
+        "夢野久作の『ドグラ・マグラ』は、日本の三大奇書のひとつに数えられています。",
+        "夢野久作の父は、政界の黒幕と呼ばれた杉山茂丸です。"
+      ],
       "sources": [
-        "https://www.aozora.gr.jp/index_pages/person96.html"
+        "https://www.aozora.gr.jp/index_pages/person96.html",
+        "https://ja.wikipedia.org/wiki/%E5%A4%A2%E9%87%8E%E4%B9%85%E4%BD%9C"
       ]
     },
     "000083": {
       "name": "菊池寛",
       "born": "1888-12-26",
       "died": "1948-03-06",
-      "episodes": [],
+      "episodes": [
+        "菊池寛は文藝春秋社をおこし、芥川賞・直木賞の創設に携わりました。",
+        "菊池寛の本名の読みは「きくち ひろし」です。",
+        "菊池寛は麻雀で負けると黙り込んでしまい、「くちきかん」と陰口を言われたそうです。",
+        "菊池寛は映画会社「大映」の社長も務めました。"
+      ],
       "sources": [
-        "https://www.aozora.gr.jp/index_pages/person83.html"
+        "https://www.aozora.gr.jp/index_pages/person83.html",
+        "https://ja.wikipedia.org/wiki/%E8%8F%8A%E6%B1%A0%E5%AF%9B"
       ]
     }
   },
